@@ -4,8 +4,9 @@
 [Jayden Shaw](https://github.com/jshaw990)
 
 ## Setup instructions
-1. Clone or download the Github repository
-2. Complete the client and server installation steps below
+1. Clone or [download](https://github.com/jshaw990/PetFinderAnimalData/archive/refs/heads/master.zip) the Github repository
+2. Visit [petfinder.com](https://www.petfinder.com/developers/v2/docs/#get-animals), create an account or login, and acquire a client and secret key
+3. Complete the client and server installation steps below
 
 ### Client
 1. In a terminal window from the project directory (aggregateDashboard) run the command:
@@ -39,7 +40,13 @@ pip install -r requirements.txt
 ~~~
 pip3 install -r requirements.txt
 ~~~
-3. Once the packages have been installed, run either of the two commands: 
+3. In the api directory, create a file called *.env*
+4. In the *.env* file, add the following: 
+~~~
+PETFINDER_CLIENT = "<ADD YOUR CLIENT KEY HERE>"
+PETFINDER_SECRET = "<ADD YOUR SECRET KEY HERE>"
+~~~
+5. Once the packages have been installed, run either of the two commands: 
 ~~~
 python -m pytest
 ~~~
@@ -47,11 +54,11 @@ python -m pytest
 python3 -m pytest
 ~~~
 Where you should see two passed tests
-4. Run in the terminal either of the two commands:
+6. Run in the terminal either of the two commands:
 ~~~
 python app.py
 ~~~
 ~~~
 python3 app.py
 ~~~
-5. The flask server will now be running at [127.0.0.1:5000](http://127.0.0.1:5000)
+7. The flask server will now be running at [127.0.0.1:5000](http://127.0.0.1:5000)
