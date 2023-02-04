@@ -1,4 +1,4 @@
-# Pet Finder Animal Data
+# PetFinder Animal Data
 
 ## Author
 [Jayden Shaw](https://github.com/jshaw990)
@@ -62,3 +62,24 @@ python app.py
 python3 app.py
 ~~~
 7. The flask server will now be running at [127.0.0.1:5000](http://127.0.0.1:5000)
+
+## Technologies utilized
+### Client
+- Vue/Nuxt
+- Typescript
+- Jest
+- Vuetify
+- uuidv4
+
+### Server
+- Python 3
+- Flask
+- Requests
+- Pandas
+- PyTest
+
+## Features
+- Responsive user interface
+- Client side caching of data utilizing local storage
+- Full typescript compatability
+- Informative data tables with sorting functionality

@@ -2,7 +2,7 @@
   <v-app-bar max-height="64px">
     <nuxt-link to="/">
       <v-app-bar-title>
-        Pet Finder Animal Data
+        PetFinder Animal Data
       </v-app-bar-title>
     </nuxt-link>
     <v-spacer />
