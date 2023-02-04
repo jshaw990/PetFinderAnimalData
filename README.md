@@ -46,7 +46,7 @@ pip3 install -r requirements.txt
 PETFINDER_CLIENT = "<ADD YOUR CLIENT KEY HERE>"
 PETFINDER_SECRET = "<ADD YOUR SECRET KEY HERE>"
 ~~~
-5. Once the packages have been installed, run either of the two commands: 
+5. Once the packages have been installed and you've added your Pet Finder keys, run either of the two commands: 
 ~~~
 python -m pytest
 ~~~
