@@ -3,47 +3,59 @@ import { apiGetAsync } from '../utils/apiRequest'
 import { IAnimal } from '../models/AnimalList'
 import { IGetRequest } from '../models/ApiResponse'
 import { getFromLocalStorage, writeToLocalStorage } from './utils'
+import { IAvailableRecords, IData, IPagination } from '~/models/Data'
 
 const animalState = reactive({
     isAnimalStateLoaded: false,
     animalList: [] as Array<IAnimal>,
-    animalMetaData: {} as any,
-    animalAggregateData: {} as any,
+    animalMetaData: {} as IPagination,
+    animalAggregateData: {} as IData,
     animalStateLoadedAt: -1,
-    animalRecordsAvailable: {} as any,
+    animalRecordsAvailable: {} as IAvailableRecords,
     currentPage: 1
 })
 
 export default function useAnimals() {
     const oneHourInMilliseconds = 3600000
 
+    /**
+      * Count the number of loaded and available animal records from PetFinder
+      */
     const countAnimalRecordsAvailable = () => {
         const availableRecords = {
             loaded: animalState.animalList.length,
             available: animalState.animalMetaData.total_count
-        }
+        } as IAvailableRecords
 
         animalState.animalRecordsAvailable = availableRecords
     }
 
+    /**
+       * Return the animal state to default
+       */
     const clearAnimalState = () => {
         animalState.isAnimalStateLoaded = false
         animalState.animalList = [] as Array<IAnimal>
-        animalState.animalMetaData = {} as any
-        animalState.animalAggregateData = {} as any
+        animalState.animalMetaData = {} as IPagination
+        animalState.animalAggregateData = {} as IData
         animalState.animalStateLoadedAt = -1
+        animalState.animalRecordsAvailable = {} as IAvailableRecords
         animalState.currentPage = 1
     }
 
+    /**
+       * Get a bulk number of animals from the API
+       * @param take how many pages of data to collect
+       */
     const getAnimalsFromApiBulk = async (take: number = 5) => {
         clearAnimalState()
 
         const request: IGetRequest | null = await apiGetAsync(`get_animals_multipage?take=${take}`)
 
-        if (request !== null && request.status === 'success') {
-            animalState.animalList = request.animals.animals
-            animalState.animalMetaData = request.animals.pagination
-            animalState.animalAggregateData = request.animals.data
+        if (request !== null && request.success) {
+            animalState.animalList = request.payload.animals
+            animalState.animalMetaData = request.payload.pagination
+            animalState.animalAggregateData = request.payload.data
             animalState.isAnimalStateLoaded = true
             animalState.animalStateLoadedAt = Date.now()
             countAnimalRecordsAvailable()
@@ -57,15 +69,19 @@ export default function useAnimals() {
         return request
     }
 
-    const getAnimalsFromApi = async (page: number = 1) => {
+    /**
+       * Get a page of animals from the api
+       * @param page page number to query for
+       */
+    const getAnimalsFromApi = async (page: number = animalState.currentPage) => {
         clearAnimalState()
 
         const request = await apiGetAsync(`get_animals?page=${page}`)
 
-        if (request !== null && request.status === 'success') {
-            animalState.animalList = request.animals.animals
-            animalState.animalMetaData = request.animals.pagination
-            animalState.animalAggregateData = request.animals.data
+        if (request !== null && request.success) {
+            animalState.animalList = request.payload.animals
+            animalState.animalMetaData = request.payload.pagination
+            animalState.animalAggregateData = request.payload.data
             animalState.isAnimalStateLoaded = true
             animalState.animalStateLoadedAt = Date.now()
             animalState.currentPage = page
@@ -78,6 +94,10 @@ export default function useAnimals() {
         return request
     }
 
+    /**
+       * Get animal state from local storage.
+       * If it does not exist or is older than one hour, query the API for more current data.
+       */
     const getAnimalsFromLocalStorage = async () => {
         clearAnimalState()
 
@@ -109,6 +129,11 @@ export default function useAnimals() {
         }
     }
 
+    /**
+       * Write data to local storage
+       * @param key local storage key
+       * @param payload data to store
+       */
     const writeAnimalsToLocalStorage = (key: string, payload: object) => {
         animalState.isAnimalStateLoaded = false
         const animalObject = {
@@ -120,6 +145,10 @@ export default function useAnimals() {
         animalState.isAnimalStateLoaded = true
     }
 
+    /**
+       * Load animal data to state
+       * @param refresh force load data from API
+       */
     const loadAllAnimals = (refresh: boolean = false) => {
         let requireRefresh = refresh
 

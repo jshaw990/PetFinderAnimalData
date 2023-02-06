@@ -12,23 +12,6 @@ import useAnimals from '@/data/animals'
 
 export default {
   name: 'AnimalListPage',
-  components: { AnimalTable, PageLayout },
-  setup () {
-    const { animalList, isAnimalStateLoaded, loadAllAnimals } = useAnimals()
-    const state = reactive({
-      animalList: []
-    })
-
-    onMounted(() => {
-      loadAllAnimals()
-
-      state.animalList = animalList.value
-    })
-
-    return {
-      isAnimalStateLoaded,
-      ...toRefs(state)
-    }
-  }
+  components: { AnimalTable, PageLayout }
 }
 </script>

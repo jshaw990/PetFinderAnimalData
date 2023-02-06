@@ -8,6 +8,6 @@ export interface IAnimalRequest {
 }
 
 export interface IGetRequest {
-    animals: IAnimalRequest
-    status: string
+    payload: IAnimalRequest
+    success: Boolean
 }

@@ -12,7 +12,7 @@
           item-value="key"
           style="width: 300px;"
           class="mx-auto"
-          @change="dataToDisplay"
+          @change="setDataToDisplay"
         />
       </div>
       <div v-if="selectedData !== null" class="d-flex flex-row flex-wrap">
@@ -72,7 +72,9 @@
         <div class="pb-4">
           Loading... Please wait.
         </div>
-        <div v-if="loadRecordCount !== null && loadRecordCount >= 1000" class="pb-8">This may take a little bit...</div>
+        <div v-if="loadRecordCount !== null && loadRecordCount >= 1000" class="pb-8">
+          This may take a little bit...
+        </div>
         <v-progress-circular indeterminate />
       </div>
     </template>
@@ -92,8 +94,7 @@ export default {
       animalAggregateData,
       animalRecordsAvailable,
       getAnimalsFromApiBulk,
-      isAnimalStateLoaded,
-      loadAllAnimals
+      isAnimalStateLoaded
     } = useAnimals()
 
     const state = reactive({
@@ -102,7 +103,7 @@ export default {
       loadRecordCount: null as number | null
     })
 
-    const dataToDisplay = () => {
+    const setDataToDisplay = () => {
       if (state.selectedValue === null) {
         return animalAggregateData
       }
@@ -139,11 +140,10 @@ export default {
       const requestedLoadAmount = Math.round(state.loadRecordCount / 20)
 
       await getAnimalsFromApiBulk(requestedLoadAmount)
+      setDataToDisplay()
     }
 
     onMounted(() => {
-      loadAllAnimals()
-
       state.loadRecordCount = animalRecordsAvailable.value.loaded
     })
 
@@ -151,7 +151,7 @@ export default {
       animalAggregateData,
       animalRecordsAvailable,
       dataMessage,
-      dataToDisplay,
+      setDataToDisplay,
       getDataMessage,
       getPercentage,
       getPossibleAnimalPayloadSize,

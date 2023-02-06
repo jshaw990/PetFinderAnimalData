@@ -1,5 +1,5 @@
 export interface IKeyValuePair {
-    [key: string]: number
+    [key: string]: number | undefined
 }
 
 export interface IData {
@@ -37,4 +37,9 @@ export interface IPagination {
     current_page: number
     total_count: number
     total_pages: number
+}
+
+export interface IAvailableRecords {
+    available: number
+    loaded: number
 }

@@ -10,11 +10,6 @@
     </div>
     <v-data-table
       class="animalListTable"
-      :footer-props="{
-        disableItemsPerPage: true,
-        itemsPerPageAllText: '',
-        itemsPerPageText: ''
-      }"
       :headers="headers"
       :items="animalList"
       :items-per-page="20"

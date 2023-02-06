@@ -28,7 +28,7 @@ CORS(app)
 @app.route('/get_animals', methods=['GET'])
 def get_animals_route():
     get_authentiated()
-    response_object = {'status': 'unsuccessful'}
+    response_object = {'success': 'false'}
 
     page = request.args.get('page')
     if page is None: 
@@ -36,26 +36,24 @@ def get_animals_route():
     
     animals = get_animals_multipage(int(page))
     if len(animals) > 0:
-        response_object['status'] = 'success'
-        response_object['animals'] = animals
+        response_object['success'] = 'true'
+        response_object['payload'] = animals
     
     return jsonify(response_object)
 
 @app.route('/get_animals_multipage', methods=['GET'])
 def get_animals_multipage_route():
     get_authentiated()
-    response_object = {'status': 'unsuccessful'}
+    response_object = {'success': 'false'}
 
     take = request.args.get('take')
     if take is None: 
         take = 1
-
-    take = int(take)
     
-    animals = get_animals_multipage(take)
+    animals = get_animals_multipage(int(take))
     if len(animals) > 0:
-        response_object['status'] = 'success'
-        response_object['animals'] = animals
+        response_object['success'] = 'true'
+        response_object['payload'] = animals
     
     return jsonify(response_object)
 
@@ -71,6 +69,7 @@ def get_animals(page = 1):
 
     if response.status_code == 401:
         get_authentiated()
+        get_animals(page)
     else:
         return response.json()
 
